@@ -6,20 +6,29 @@ const reducer = (state, action) => {
     case 'guess':
       if (!state.number || state.done)
         throw new Error(`Wrong state ${state} for action 'guess'`);
-      if (action.value == state.number)
+
+      const guessedNumber = parseInt(action.value);
+      if (guessedNumber) {
+        if (guessedNumber === state.number)
+          return {
+            ...state,
+            guesses: (state.guesses || 0) + 1,
+            done: true,
+            msg: `You got it! The number was ${state.number}.`,
+          };
+        else
+          return {
+            ...state,
+            guesses: (state.guesses || 0) + 1,
+            msg: `${action.value} is too ${
+              action.value < state.number ? 'small' : 'large'
+            }`,
+          };
+      } else
         return {
           ...state,
           guesses: (state.guesses || 0) + 1,
-          done: true,
-          msg: `You got it in ${state.guesses + 1}!`,
-        };
-      else
-        return {
-          ...state,
-          guesses: (state.guesses || 0) + 1,
-          msg: `${action.value} is too ${
-            action.value < state.number ? 'small' : 'large'
-          }`,
+          msg: 'Please enter a number',
         };
 
     default:

@@ -13,9 +13,22 @@ const GuessEntry = ({ done, submitGuess }) => {
     setNumber('');
   }, [number, submitGuess]);
 
+  const keypressHandler = useCallback(
+    (e) => {
+      if (e.which === 13) clickHandler();
+    },
+    [clickHandler]
+  );
+
   return (
     <div>
-      <input type="text" disabled={done} onChange={changeHandler}></input>
+      <input
+        type="text"
+        disabled={done}
+        onChange={changeHandler}
+        onKeyPress={keypressHandler}
+        value={number}
+      ></input>
       <button onClick={clickHandler} disabled={!number}>
         Submit Guess
       </button>
