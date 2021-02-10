@@ -1,10 +1,11 @@
+import { Button, ControlGroup, NumericInput } from '@blueprintjs/core';
 import { useCallback, useState } from 'react';
 
 const GuessEntry = ({ done, submitGuess }) => {
   const [number, setNumber] = useState('');
   const changeHandler = useCallback(
-    (e) => {
-      setNumber(e.target.value);
+    (val) => {
+      setNumber(val);
     },
     [setNumber]
   );
@@ -21,18 +22,17 @@ const GuessEntry = ({ done, submitGuess }) => {
   );
 
   return (
-    <div>
-      <input
-        type="text"
+    <ControlGroup>
+      <NumericInput
         disabled={done}
-        onChange={changeHandler}
+        onValueChange={changeHandler}
         onKeyPress={keypressHandler}
         value={number}
-      ></input>
-      <button onClick={clickHandler} disabled={!number}>
+      />
+      <Button onClick={clickHandler} disabled={!number} intent="success">
         Submit Guess
-      </button>
-    </div>
+      </Button>
+    </ControlGroup>
   );
 };
 

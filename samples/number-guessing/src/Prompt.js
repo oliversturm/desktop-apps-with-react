@@ -14,7 +14,7 @@ const Prompt = ({ guesses, msg }) => {
     }
   }, [guesses, msg, setViewMsg]);
 
-  return <div>{viewMsg}</div>;
+  return <div className="bp3-ui-text">{viewMsg}</div>;
 };
 
 export default Prompt;
