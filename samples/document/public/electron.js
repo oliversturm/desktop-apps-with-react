@@ -103,13 +103,18 @@ ipcMain.handle('open-file', (event, args) => {
         { name: 'All Files', extensions: ['*'] },
       ],
     })
-    .then(({ filePaths }) =>
-      filePaths.length > 0
-        ? fs.readFile(filePaths[0], 'utf8').then((data) => ({
-            path: filePaths[0],
-            viewName: path.basename(filePaths[0]),
-            data,
-          }))
-        : undefined
+    .then(({ filePaths }) => filePaths.length > 0 && filePaths[0])
+    .then((fp) => {
+      fp && app.addRecentDocument(fp);
+      return fp;
+    })
+    .then(
+      (fp) =>
+        fp &&
+        fs.readFile(fp, 'utf8').then((data) => ({
+          path: fp,
+          viewName: path.basename(fp),
+          data,
+        }))
     );
 });
