@@ -55,7 +55,7 @@
   "main": "./public/electron.js",
   "build": {
     "appId": "com.electron.my_app",
-    "productName": "My App",
+    "productName": "Markdown Editor",
     "files": [
       "build/**/*",
       "node_modules/**/*"
@@ -73,7 +73,7 @@
       "icon": "./public/logo512.png"
     },
     "linux": {
-      "target": "deb",
+      "target": "appimage",
       "category": "Development"
     }
   }
