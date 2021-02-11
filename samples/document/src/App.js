@@ -1,8 +1,9 @@
 import './App.css';
 import { Button, Navbar, Tab, Tabs } from '@blueprintjs/core';
-import { useCallback, useReducer } from 'react';
+import { useCallback, useEffect, useReducer } from 'react';
 import { openFileAction, reducer, selectFilePathAction } from './state';
 import FileEditor from './FileEditor';
+import { ipcRenderer } from 'electron';
 
 function App() {
   const [state, dispatch] = useReducer(reducer, {
@@ -29,6 +30,12 @@ function App() {
     },
     [dispatch]
   );
+
+  useEffect(() => {
+    ipcRenderer.on('external-open-file', (event, path) => {
+      console.log('Instructed to open file', path);
+    });
+  }, []);
 
   return (
     <div className="App">

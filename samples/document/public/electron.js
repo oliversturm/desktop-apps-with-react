@@ -17,7 +17,6 @@ function createWindow() {
     width: 800,
     height: 600,
     webPreferences: {
-      //      nodeIntegration: true,
       preload: path.join(
         app.getAppPath(),
         `./${isDev ? 'public' : 'build'}/preload.js`
@@ -80,6 +79,15 @@ app.on('activate', () => {
 // Below: application specific implementation code.
 // Obviously this could (or should!) be relocated to separate files.
 //
+
+app.on('open-file', (event, path) => {
+  event.preventDefault();
+
+  console.log('app open-file event', event);
+  console.log('app open-file got path', path);
+
+  BrowserWindow.getFocusedWindow().webContents.send('external-open-file', path);
+});
 
 ipcMain.handle('dummy-button', () => {
   return dialog.showMessageBox(BrowserWindow.getFocusedWindow(), {
