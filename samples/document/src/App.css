@@ -1,0 +1,13 @@
+.editorFrame {
+  display: flex;
+  padding: 10px;
+}
+
+.editorFrame > * {
+  padding: 10px;
+  width: 100%;
+}
+
+.bp3-tabs {
+  margin: 10px;
+}
