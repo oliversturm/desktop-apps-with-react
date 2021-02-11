@@ -18,7 +18,12 @@ const FileEditor = ({ file }) => {
 
   return (
     <div className="editorFrame">
-      <TextArea value={textContent} fill={true} onChange={contentChanged} />
+      <TextArea
+        value={textContent}
+        fill={true}
+        onChange={contentChanged}
+        className="bp3-monospace-text"
+      />
       <div className="bp3-running-text">
         <ReactMarkdown source={textContent} />
       </div>
