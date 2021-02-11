@@ -31,10 +31,11 @@ function App() {
   );
 
   useEffect(() => {
-    window.api.onExternalOpenFile((path) => {
-      console.log('Instructed to open file', path);
+    window.api.onExternalOpenFile((fileInfo) => {
+      const { path, viewName, data } = fileInfo;
+      dispatch(openFileAction(path, viewName, data));
     });
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="App">

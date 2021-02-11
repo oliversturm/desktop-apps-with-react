@@ -5,6 +5,8 @@ contextBridge.exposeInMainWorld('api', {
   dummyButton: () => ipcRenderer.invoke('dummy-button'),
 
   onExternalOpenFile: (handler) => {
-    ipcRenderer.on('external-open-file', (event, path) => handler(path));
+    ipcRenderer.on('external-open-file', (event, fileInfo) =>
+      handler(fileInfo)
+    );
   },
 });

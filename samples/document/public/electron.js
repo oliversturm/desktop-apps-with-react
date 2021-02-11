@@ -80,10 +80,36 @@ app.on('activate', () => {
 // Obviously this could (or should!) be relocated to separate files.
 //
 
+const openExistingFile = (fp) => {
+  app.addRecentDocument(fp);
+  return fs.readFile(fp, 'utf8').then((data) => ({
+    path: fp,
+    viewName: path.basename(fp),
+    data,
+  }));
+};
+
+const openFile = (path) =>
+  path
+    ? openExistingFile(path)
+    : dialog
+        .showOpenDialog(BrowserWindow.getFocusedWindow(), {
+          title: 'Open Markdown Document',
+          properties: ['openFile'],
+          filters: [
+            { name: 'Markdown Documents', extensions: ['md'] },
+            { name: 'All Files', extensions: ['*'] },
+          ],
+        })
+        .then(({ filePaths }) => filePaths.length > 0 && filePaths[0])
+        .then((path) => path && openExistingFile(path));
+
 app.on('open-file', (event, path) => {
   event.preventDefault();
 
-  BrowserWindow.getFocusedWindow().webContents.send('external-open-file', path);
+  return openExistingFile(path).then((res) =>
+    BrowserWindow.getFocusedWindow().webContents.send('external-open-file', res)
+  );
 });
 
 ipcMain.handle('dummy-button', () => {
@@ -98,28 +124,4 @@ ipcMain.handle('dummy-button', () => {
 
 // We don't need 'event' or 'args' here, but
 // they are easy to receive with the ipc call.
-ipcMain.handle('open-file', (event, args) => {
-  return dialog
-    .showOpenDialog(BrowserWindow.getFocusedWindow(), {
-      title: 'Open Markdown Document',
-      properties: ['openFile'],
-      filters: [
-        { name: 'Markdown Documents', extensions: ['md'] },
-        { name: 'All Files', extensions: ['*'] },
-      ],
-    })
-    .then(({ filePaths }) => filePaths.length > 0 && filePaths[0])
-    .then((fp) => {
-      fp && app.addRecentDocument(fp);
-      return fp;
-    })
-    .then(
-      (fp) =>
-        fp &&
-        fs.readFile(fp, 'utf8').then((data) => ({
-          path: fp,
-          viewName: path.basename(fp),
-          data,
-        }))
-    );
-});
+ipcMain.handle('open-file', (event, args) => openFile());
