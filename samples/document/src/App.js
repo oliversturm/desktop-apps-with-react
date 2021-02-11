@@ -3,7 +3,6 @@ import { Button, Navbar, Tab, Tabs } from '@blueprintjs/core';
 import { useCallback, useEffect, useReducer } from 'react';
 import { openFileAction, reducer, selectFilePathAction } from './state';
 import FileEditor from './FileEditor';
-import { ipcRenderer } from 'electron';
 
 function App() {
   const [state, dispatch] = useReducer(reducer, {
@@ -32,7 +31,7 @@ function App() {
   );
 
   useEffect(() => {
-    ipcRenderer.on('external-open-file', (event, path) => {
+    window.api.onExternalOpenFile((path) => {
       console.log('Instructed to open file', path);
     });
   }, []);

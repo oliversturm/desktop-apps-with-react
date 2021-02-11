@@ -83,9 +83,6 @@ app.on('activate', () => {
 app.on('open-file', (event, path) => {
   event.preventDefault();
 
-  console.log('app open-file event', event);
-  console.log('app open-file got path', path);
-
   BrowserWindow.getFocusedWindow().webContents.send('external-open-file', path);
 });
 
