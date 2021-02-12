@@ -76,5 +76,10 @@
       "target": "appimage",
       "category": "Development"
     }
+  },
+  "electronmon": {
+    "patterns": [
+      "!*.md"
+    ]
   }
 }
