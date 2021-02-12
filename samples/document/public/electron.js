@@ -1,7 +1,6 @@
-const { app, BrowserWindow, ipcMain, dialog } = require('electron');
+const { app, BrowserWindow } = require('electron');
 const isDev = require('electron-is-dev');
 const path = require('path');
-const fs = require('fs').promises;
 
 // Conditionally include the dev tools installer to load React Dev Tools
 let installExtension, REACT_DEVELOPER_TOOLS;
@@ -75,53 +74,5 @@ app.on('activate', () => {
 // The code above has been adapted from a starter example in the Electron docs:
 // https://www.electronjs.org/docs/tutorial/quick-start#create-the-main-script-file
 
-// -----------------------------------------------------------------
-// Below: application specific implementation code.
-// Obviously this could (or should!) be relocated to separate files.
-//
-
-const openExistingFile = (fp) => {
-  app.addRecentDocument(fp);
-  return fs.readFile(fp, 'utf8').then((data) => ({
-    path: fp,
-    viewName: path.basename(fp),
-    data,
-  }));
-};
-
-const openFile = (path) =>
-  path
-    ? openExistingFile(path)
-    : dialog
-        .showOpenDialog(BrowserWindow.getFocusedWindow(), {
-          title: 'Open Markdown Document',
-          properties: ['openFile'],
-          filters: [
-            { name: 'Markdown Documents', extensions: ['md'] },
-            { name: 'All Files', extensions: ['*'] },
-          ],
-        })
-        .then(({ filePaths }) => filePaths.length > 0 && filePaths[0])
-        .then((path) => path && openExistingFile(path));
-
-app.on('open-file', (event, path) => {
-  event.preventDefault();
-
-  return openExistingFile(path).then((res) =>
-    BrowserWindow.getFocusedWindow().webContents.send('external-open-file', res)
-  );
-});
-
-ipcMain.handle('dummy-button', () => {
-  return dialog.showMessageBox(BrowserWindow.getFocusedWindow(), {
-    type: 'info',
-    buttons: ['Oh well then'],
-    title: 'No features here, sorry!',
-    message:
-      'Unfortunately this is just a demo and the functionality you tried to use is not available.',
-  });
-});
-
-// We don't need 'event' or 'args' here, but
-// they are easy to receive with the ipc call.
-ipcMain.handle('open-file', (event, args) => openFile());
+require('./appfunctions');
+require('./menuconfig');
