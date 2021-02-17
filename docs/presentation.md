@@ -38,7 +38,11 @@ Oliver Sturm &bull; @olivers[@fosstodon.org] &bull; oliver@oliversturm.com
 
 ## Agenda
 
-- _forgot to fill this out_
+- How do we develop for desktops in 2021?
+- It doesn't have to be React!
+- Priorities for cross-platform desktop apps
+- Electron processes
+- APIs for OS integration
 
 ---
 
