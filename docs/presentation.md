@@ -105,6 +105,20 @@ class: impact
 
 ---
 
+## Context Bridge call for openFile
+
+.svg-light-100[![](electron-context-bridge.svg)]
+
+---
+
+class: impact
+
+# Demo
+
+## Context Bridging and OS integration
+
+---
+
 ## Sources
 
 - This presentation: <br>https://oliversturm.github.io/desktop-apps-with-react/
